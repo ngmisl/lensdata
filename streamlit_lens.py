@@ -44,7 +44,7 @@ st.write(""" # Lens Data """)
 
 def sideBar():
     with st.sidebar:
-        st.markdown("**Follow Me**")
+        st.markdown("### Socials")
         st.markdown("* [ngmisl.lens](https://lenster.xyz/u/ngmisl.lens)")
         st.markdown("* [ngmisl.twitter](https://twitter.com/ngmisl)")
         st.markdown("* [ngmisl.github](https://github.com/ngmisl/)")
