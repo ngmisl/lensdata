@@ -1,3 +1,4 @@
+from asyncore import write
 import json
 
 import requests as re
@@ -41,11 +42,28 @@ def flatten_json(y):
 
 st.write(""" # Lens Data """)
 
-json_data = json.loads(r.text)
-flat = flatten_json(json_data)
+def totalProtocol():
+  json_data = json.loads(r.text)
+  flat = flatten_json(json_data)
+  
+  # Layout Start
+  
+  col1, col2, col3, col4, col5 = st.columns(5)
 
-st.text("Total Profiles: {}".format(flat["data_globalProtocolStats_totalProfiles"]))
-st.text("Total Posts: {}".format(flat["data_globalProtocolStats_totalPosts"]))
-st.text("Total Comments: {}".format(flat["data_globalProtocolStats_totalComments"]))
-st.text("Total Collects: {}".format(flat["data_globalProtocolStats_totalCollects"]))
-st.text("Total Profiles: {}".format(flat["data_globalProtocolStats_totalProfiles"]))
+  with col1:
+    col1.write("Total Profiles")
+    col1.write(flat["data_globalProtocolStats_totalProfiles"])
+  with col2:
+    col2.write("Total Posts")
+    col2.write(flat["data_globalProtocolStats_totalPosts"])
+  with col3:
+    col3.write("Total Comments")
+    col3.write(flat["data_globalProtocolStats_totalComments"])
+  with col4:
+    col4.write("Total Collects")
+    col4.write(flat["data_globalProtocolStats_totalCollects"])
+  with col5:
+    col5.write("Total Mirrors")
+    col5.write(flat["data_globalProtocolStats_totalMirrors"])
+
+totalProtocol()
