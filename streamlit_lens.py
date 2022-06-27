@@ -78,7 +78,7 @@ def totalProtocol():
         col5.write(flat["data_globalProtocolStats_totalMirrors"])
 
 
-def topAccounts():
+def topFollowed():
 
     # Top Followers
     query_followers = """ query ExploreProfiles {
@@ -179,35 +179,38 @@ def topAccounts():
 
     # Layout Start columns
     # Layout references: https://docs.streamlit.io/library/api-reference/layout
+    
+    st.markdown("---")
 
-#    st.write(flat_followers)
+    #    st.write(flat_followers)
 
     col1, col2, col3, col4, col5 = st.columns(5)
 
     with col1:
-        col1.write("Most Followed")
-        col1.write(f'1. {flat_followers["data_exploreProfiles_items_0_handle"]}')
-        col1.write(f'2. {flat_followers["data_exploreProfiles_items_1_handle"]}')
-        col1.write(f'3. {flat_followers["data_exploreProfiles_items_2_handle"]}')
-#    with col2:
-#        col2.write("Total Posts")
-#        col2.write(flat["data_globalProtocolStats_totalPosts"])
-#    with col3:
-#        col3.write("Total Comments")
-#        col3.write(flat["data_globalProtocolStats_totalComments"])
-#    with col4:
-#        col4.write("Total Collects")
-#        col4.write(flat["data_globalProtocolStats_totalCollects"])
-#    with col5:
-#        col5.write("Total Mirrors")
-#        col5.write(flat["data_globalProtocolStats_totalMirrors"])
+        col1.write("Top Followed")
+        col1.write(
+            f'1. [{flat_followers["data_exploreProfiles_items_0_handle"]}](https://lenster.xyz/u/{flat_followers["data_exploreProfiles_items_0_handle"]}) {flat_followers["data_exploreProfiles_items_0_stats_totalFollowers"]}'
+        )
+        col1.write(
+            f'2. [{flat_followers["data_exploreProfiles_items_1_handle"]}](https://lenster.xyz/u/{flat_followers["data_exploreProfiles_items_1_handle"]}) {flat_followers["data_exploreProfiles_items_1_stats_totalFollowers"]}'
+        )
+        col1.write(
+            f'3. [{flat_followers["data_exploreProfiles_items_2_handle"]}](https://lenster.xyz/u/{flat_followers["data_exploreProfiles_items_2_handle"]}) {flat_followers["data_exploreProfiles_items_2_stats_totalFollowers"]}'
+        )
+        col1.write(
+            f'4. [{flat_followers["data_exploreProfiles_items_3_handle"]}](https://lenster.xyz/u/{flat_followers["data_exploreProfiles_items_3_handle"]}) {flat_followers["data_exploreProfiles_items_3_stats_totalFollowers"]}'
+        )
+        col1.write(
+            f'5. [{flat_followers["data_exploreProfiles_items_4_handle"]}](https://lenster.xyz/u/{flat_followers["data_exploreProfiles_items_4_handle"]}) {flat_followers["data_exploreProfiles_items_4_stats_totalFollowers"]}'
+        )
+
 
 # App Layout
 def main():
     header()
     sideBar()
     totalProtocol()
-    topAccounts()
+    topFollowed()
 
 
 if __name__ == "__main__":
