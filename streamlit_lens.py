@@ -3,21 +3,9 @@ import json
 import requests as re
 import streamlit as st
 
-query = """ query globalProtocolStats {
-  globalProtocolStats {
-    totalProfiles
-    totalPosts
-    totalComments
-    totalCollects
-    totalMirrors
-  }
-} """
-
 url = "https://api.lens.dev/"
 
 headers = {"content-type": "application/json"}
-
-r = re.post(url, json={"query": query}, headers=headers)
 
 
 def flatten_json(y):
@@ -39,7 +27,8 @@ def flatten_json(y):
     return out
 
 
-st.write(""" # Lens Data """)
+def header():
+    st.markdown("# Lens Data")
 
 
 def sideBar():
@@ -51,6 +40,16 @@ def sideBar():
 
 
 def totalProtocol():
+    query = """ query globalProtocolStats { globalProtocolStats {
+    totalProfiles
+    totalPosts
+    totalComments
+    totalCollects
+    totalMirrors }
+} """
+
+    r = re.post(url, json={"query": query}, headers=headers)
+
     json_data = json.loads(r.text)
     flat = flatten_json(json_data)
 
@@ -76,5 +75,11 @@ def totalProtocol():
         col5.write(flat["data_globalProtocolStats_totalMirrors"])
 
 
-sideBar()
-totalProtocol()
+def main():
+    header()
+    sideBar()
+    totalProtocol()
+
+
+if __name__ == "__main__":
+    main()
