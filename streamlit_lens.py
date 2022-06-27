@@ -26,9 +26,11 @@ def flatten_json(y):
     flatten(y)
     return out
 
+
 # Header
 def header():
     st.markdown("# Lens Data")
+
 
 # Sidebar defined here
 def sideBar():
@@ -37,6 +39,7 @@ def sideBar():
         st.markdown("* [ngmisl.lens](https://lenster.xyz/u/ngmisl.lens)")
         st.markdown("* [ngmisl.twitter](https://twitter.com/ngmisl)")
         st.markdown("* [ngmisl.github](https://github.com/ngmisl/)")
+
 
 # Total Protocol stats
 def totalProtocol():
@@ -74,11 +77,137 @@ def totalProtocol():
         col5.write("Total Mirrors")
         col5.write(flat["data_globalProtocolStats_totalMirrors"])
 
+
+def topAccounts():
+
+    # Top Followers
+    query_followers = """ query ExploreProfiles {
+  exploreProfiles(request: { sortCriteria: MOST_FOLLOWERS }) {
+    items {
+      id
+      name
+      bio
+      isDefault
+      attributes {
+        displayType
+        traitType
+        key
+        value
+      }
+      followNftAddress
+      metadata
+      handle
+      picture {
+        ... on NftImage {
+          contractAddress
+          tokenId
+          uri
+          chainId
+          verified
+        }
+        ... on MediaSet {
+          original {
+            url
+            mimeType
+          }
+        }
+      }
+      coverPicture {
+        ... on NftImage {
+          contractAddress
+          tokenId
+          uri
+          chainId
+          verified
+        }
+        ... on MediaSet {
+          original {
+            url
+            mimeType
+          }
+        }
+      }
+      ownedBy
+      dispatcher {
+        address
+        canUseRelay
+      }
+      stats {
+        totalFollowers
+        totalFollowing
+        totalPosts
+        totalComments
+        totalMirrors
+        totalPublications
+        totalCollects
+      }
+      followModule {
+        ... on FeeFollowModuleSettings {
+          type
+          contractAddress
+          amount {
+            asset {
+              name
+              symbol
+              decimals
+              address
+            }
+            value
+          }
+          recipient
+        }
+        ... on ProfileFollowModuleSettings {
+        type
+        }
+        ... on RevertFollowModuleSettings {
+        type
+        }
+      }
+    }
+    pageInfo {
+      prev
+      next
+      totalCount
+    }
+  }
+} """
+
+    r_followers = re.post(url, json={"query": query_followers}, headers=headers)
+
+    json_data_followers = json.loads(r_followers.text)
+    flat_followers = flatten_json(json_data_followers)
+
+    # Layout Start columns
+    # Layout references: https://docs.streamlit.io/library/api-reference/layout
+
+#    st.write(flat_followers)
+
+    col1, col2, col3, col4, col5 = st.columns(5)
+
+    with col1:
+        col1.write("Most Followed")
+        col1.write(f'1. {flat_followers["data_exploreProfiles_items_0_handle"]}')
+        col1.write(f'2. {flat_followers["data_exploreProfiles_items_1_handle"]}')
+        col1.write(f'3. {flat_followers["data_exploreProfiles_items_2_handle"]}')
+#    with col2:
+#        col2.write("Total Posts")
+#        col2.write(flat["data_globalProtocolStats_totalPosts"])
+#    with col3:
+#        col3.write("Total Comments")
+#        col3.write(flat["data_globalProtocolStats_totalComments"])
+#    with col4:
+#        col4.write("Total Collects")
+#        col4.write(flat["data_globalProtocolStats_totalCollects"])
+#    with col5:
+#        col5.write("Total Mirrors")
+#        col5.write(flat["data_globalProtocolStats_totalMirrors"])
+
 # App Layout
 def main():
     header()
     sideBar()
     totalProtocol()
+    topAccounts()
 
 
 if __name__ == "__main__":
