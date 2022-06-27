@@ -7,7 +7,7 @@ url = "https://api.lens.dev/"
 
 headers = {"content-type": "application/json"}
 
-
+# json flatten helper function
 def flatten_json(y):
     out = {}
 
@@ -26,11 +26,11 @@ def flatten_json(y):
     flatten(y)
     return out
 
-
+# Header
 def header():
     st.markdown("# Lens Data")
 
-
+# Sidebar defined here
 def sideBar():
     with st.sidebar:
         st.markdown("### Socials")
@@ -38,7 +38,7 @@ def sideBar():
         st.markdown("* [ngmisl.twitter](https://twitter.com/ngmisl)")
         st.markdown("* [ngmisl.github](https://github.com/ngmisl/)")
 
-
+# Total Protocol stats
 def totalProtocol():
     query = """ query globalProtocolStats { globalProtocolStats {
     totalProfiles
@@ -53,7 +53,7 @@ def totalProtocol():
     json_data = json.loads(r.text)
     flat = flatten_json(json_data)
 
-    # Layout Start
+    # Layout Start columns
     # Layout references: https://docs.streamlit.io/library/api-reference/layout
 
     col1, col2, col3, col4, col5 = st.columns(5)
@@ -74,7 +74,7 @@ def totalProtocol():
         col5.write("Total Mirrors")
         col5.write(flat["data_globalProtocolStats_totalMirrors"])
 
-
+# App Layout
 def main():
     header()
     sideBar()
