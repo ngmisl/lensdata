@@ -30,11 +30,8 @@ def flatten_json(y):
 
 # Header
 def header():
-  st.set_page_config(
-    page_title="Lens Data",
-    page_icon="🌱"
-  )
-  st.markdown("# Lens Data")
+    st.set_page_config(page_title="Lens Data", page_icon="🌱")
+    st.markdown("# Lens Data")
 
 
 # Sidebar defined here
@@ -182,13 +179,112 @@ def topStats():
     json_data_followers = json.loads(r_followers.text)
     flat_followers = flatten_json(json_data_followers)
 
+    # Top Posts
+    query_posts = """ query ExploreProfiles {
+  exploreProfiles(request: { sortCriteria: MOST_POSTS}) {
+    items {
+      id
+      name
+      bio
+      isDefault
+      attributes {
+        displayType
+        traitType
+        key
+        value
+      }
+      followNftAddress
+      metadata
+      handle
+      picture {
+        ... on NftImage {
+          contractAddress
+          tokenId
+          uri
+          chainId
+          verified
+        }
+        ... on MediaSet {
+          original {
+            url
+            mimeType
+          }
+        }
+      }
+      coverPicture {
+        ... on NftImage {
+          contractAddress
+          tokenId
+          uri
+          chainId
+          verified
+        }
+        ... on MediaSet {
+          original {
+            url
+            mimeType
+          }
+        }
+      }
+      ownedBy
+      dispatcher {
+        address
+        canUseRelay
+      }
+      stats {
+        totalFollowers
+        totalFollowing
+        totalPosts
+        totalComments
+        totalMirrors
+        totalPublications
+        totalCollects
+      }
+      followModule {
+        ... on FeeFollowModuleSettings {
+          type
+          contractAddress
+          amount {
+            asset {
+              name
+              symbol
+              decimals
+              address
+            }
+            value
+          }
+          recipient
+        }
+        ... on ProfileFollowModuleSettings {
+        type
+        }
+        ... on RevertFollowModuleSettings {
+        type
+        }
+      }
+    }
+    pageInfo {
+      prev
+      next
+      totalCount
+    }
+  }
+} """
+
+    r_posts = re.post(url, json={"query": query_posts}, headers=headers)
+
+    json_data_posts = json.loads(r_posts.text)
+    flat_posts = flatten_json(json_data_posts)
+
+    # TODO: MOST_COMMENTS, MOST_MIRRORS, MOST_COLLECTS
+
+    # helper: st.write(flat)
+
     # Layout Start columns
     # Layout references: https://docs.streamlit.io/library/api-reference/layout
 
     st.markdown("---")
 
-    #    st.write(flat_followers)
-    
     # UI
 
     col1, col2, col3, col4, col5 = st.columns(5)
@@ -209,6 +305,24 @@ def topStats():
         )
         col1.write(
             f'5. [{flat_followers["data_exploreProfiles_items_4_handle"]}](https://lenster.xyz/u/{flat_followers["data_exploreProfiles_items_4_handle"]}) {flat_followers["data_exploreProfiles_items_4_stats_totalFollowers"]}'
+        )
+
+    with col2:
+        col2.write("Top Posts")
+        col2.write(
+            f'1. [{flat_posts["data_exploreProfiles_items_0_handle"]}](https://lenster.xyz/u/{flat_posts["data_exploreProfiles_items_0_handle"]}) {flat_posts["data_exploreProfiles_items_0_stats_totalPosts"]}'
+        )
+        col2.write(
+            f'2. [{flat_posts["data_exploreProfiles_items_1_handle"]}](https://lenster.xyz/u/{flat_posts["data_exploreProfiles_items_1_handle"]}) {flat_posts["data_exploreProfiles_items_1_stats_totalPosts"]}'
+        )
+        col2.write(
+            f'3. [{flat_posts["data_exploreProfiles_items_2_handle"]}](https://lenster.xyz/u/{flat_posts["data_exploreProfiles_items_2_handle"]}) {flat_posts["data_exploreProfiles_items_2_stats_totalPosts"]}'
+        )
+        col2.write(
+            f'4. [{flat_posts["data_exploreProfiles_items_3_handle"]}](https://lenster.xyz/u/{flat_posts["data_exploreProfiles_items_3_handle"]}) {flat_posts["data_exploreProfiles_items_3_stats_totalPosts"]}'
+        )
+        col2.write(
+            f'5. [{flat_posts["data_exploreProfiles_items_4_handle"]}](https://lenster.xyz/u/{flat_posts["data_exploreProfiles_items_4_handle"]}) {flat_posts["data_exploreProfiles_items_4_stats_totalPosts"]}'
         )
 
 
