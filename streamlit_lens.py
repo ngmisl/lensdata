@@ -232,7 +232,7 @@ def main():
     sideBar()
     totalProtocol()
     topStats()
-    dune()
+
 
 
 if __name__ == "__main__":
