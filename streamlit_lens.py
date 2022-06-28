@@ -1,5 +1,4 @@
 import json
-from tkinter.ttk import Style
 
 import requests as re
 import streamlit as st
@@ -181,7 +180,7 @@ def topStats():
 
     # Layout Start columns
     # Layout references: https://docs.streamlit.io/library/api-reference/layout
-    
+
     st.markdown("---")
 
     #    st.write(flat_followers)
@@ -206,25 +205,33 @@ def topStats():
             f'5. [{flat_followers["data_exploreProfiles_items_4_handle"]}](https://lenster.xyz/u/{flat_followers["data_exploreProfiles_items_4_handle"]}) {flat_followers["data_exploreProfiles_items_4_stats_totalFollowers"]}'
         )
 
+
 def dune():
-  st.markdown("---")
-  st.markdown("## Some Cool Dune Stats")
-  
-  # TODO: find a way to set style="background: #FFFFFF;"
-  
-  st.markdown("Lens Profiles with Posts")  
-  components.iframe("https://dune.com/embeds/891346/1557954/d23c8e22-1616-4370-8b9b-cc0e847de099")
-  
-  st.markdown("Lenster Total Gas Fee Consumed ($MATIC)")
-  components.iframe("https://dune.com/embeds/891428/1558143/6ccff924-0622-4f8d-a5ae-78b42e9399fa")
-  
-  st.markdown("Daily Lenster Posts")
-  components.iframe("https://dune.com/embeds/891273/1557779/ddf3a367-ecf9-4177-9d00-a6b7fe22c8f4")
-  
-  st.markdown("Daily Lenster Comments")
-  components.iframe("https://dune.com/embeds/891266/1557768/eba8c66e-e293-4d1b-bf9b-6eb44602e92d")
-  
-  
+    st.markdown("---")
+    st.markdown("## Some Cool Dune Stats")
+
+    # TODO: find a way to set style="background: #FFFFFF;"
+
+    st.markdown("Lens Profiles with Posts")
+    components.iframe(
+        "https://dune.com/embeds/891346/1557954/d23c8e22-1616-4370-8b9b-cc0e847de099"
+    )
+
+    st.markdown("Lenster Total Gas Fee Consumed ($MATIC)")
+    components.iframe(
+        "https://dune.com/embeds/891428/1558143/6ccff924-0622-4f8d-a5ae-78b42e9399fa"
+    )
+
+    st.markdown("Daily Lenster Posts")
+    components.iframe(
+        "https://dune.com/embeds/891273/1557779/ddf3a367-ecf9-4177-9d00-a6b7fe22c8f4"
+    )
+
+    st.markdown("Daily Lenster Comments")
+    components.iframe(
+        "https://dune.com/embeds/891266/1557768/eba8c66e-e293-4d1b-bf9b-6eb44602e92d"
+    )
+
 
 # App Layout
 def main():
@@ -232,7 +239,7 @@ def main():
     sideBar()
     totalProtocol()
     topStats()
-
+    dune()
 
 
 if __name__ == "__main__":
