@@ -276,9 +276,106 @@ def topStats():
     json_data_posts = json.loads(r_posts.text)
     flat_posts = flatten_json(json_data_posts)
 
-    # TODO: MOST_COMMENTS, MOST_MIRRORS, MOST_COLLECTS
+    # Most Comments
 
-    # helper: st.write(flat)
+    query_comments = """ query ExploreProfiles {
+  exploreProfiles(request: { sortCriteria: MOST_COMMENTS}) {
+    items {
+      id
+      name
+      bio
+      isDefault
+      attributes {
+        displayType
+        traitType
+        key
+        value
+      }
+      followNftAddress
+      metadata
+      handle
+      picture {
+        ... on NftImage {
+          contractAddress
+          tokenId
+          uri
+          chainId
+          verified
+        }
+        ... on MediaSet {
+          original {
+            url
+            mimeType
+          }
+        }
+      }
+      coverPicture {
+        ... on NftImage {
+          contractAddress
+          tokenId
+          uri
+          chainId
+          verified
+        }
+        ... on MediaSet {
+          original {
+            url
+            mimeType
+          }
+        }
+      }
+      ownedBy
+      dispatcher {
+        address
+        canUseRelay
+      }
+      stats {
+        totalFollowers
+        totalFollowing
+        totalPosts
+        totalComments
+        totalMirrors
+        totalPublications
+        totalCollects
+      }
+      followModule {
+        ... on FeeFollowModuleSettings {
+          type
+          contractAddress
+          amount {
+            asset {
+              name
+              symbol
+              decimals
+              address
+            }
+            value
+          }
+          recipient
+        }
+        ... on ProfileFollowModuleSettings {
+        type
+        }
+        ... on RevertFollowModuleSettings {
+        type
+        }
+      }
+    }
+    pageInfo {
+      prev
+      next
+      totalCount
+    }
+  }
+} """
+
+    r_comments = re.post(url, json={"query": query_comments}, headers=headers)
+
+    json_data_comments = json.loads(r_comments.text)
+    flat_comments = flatten_json(json_data_comments)
+
+    # helper:
+    # st.write(flat_comments)
 
     # Layout Start columns
     # Layout references: https://docs.streamlit.io/library/api-reference/layout
@@ -307,22 +404,40 @@ def topStats():
             f'5. [{flat_followers["data_exploreProfiles_items_4_handle"]}](https://lenster.xyz/u/{flat_followers["data_exploreProfiles_items_4_handle"]}) {flat_followers["data_exploreProfiles_items_4_stats_totalFollowers"]}'
         )
 
-    with col2:
-        col2.write("Top Posts")
-        col2.write(
+    with col3:
+        col3.write("Top Posts")
+        col3.write(
             f'1. [{flat_posts["data_exploreProfiles_items_0_handle"]}](https://lenster.xyz/u/{flat_posts["data_exploreProfiles_items_0_handle"]}) {flat_posts["data_exploreProfiles_items_0_stats_totalPosts"]}'
         )
-        col2.write(
+        col3.write(
             f'2. [{flat_posts["data_exploreProfiles_items_1_handle"]}](https://lenster.xyz/u/{flat_posts["data_exploreProfiles_items_1_handle"]}) {flat_posts["data_exploreProfiles_items_1_stats_totalPosts"]}'
         )
-        col2.write(
+        col3.write(
             f'3. [{flat_posts["data_exploreProfiles_items_2_handle"]}](https://lenster.xyz/u/{flat_posts["data_exploreProfiles_items_2_handle"]}) {flat_posts["data_exploreProfiles_items_2_stats_totalPosts"]}'
         )
-        col2.write(
+        col3.write(
             f'4. [{flat_posts["data_exploreProfiles_items_3_handle"]}](https://lenster.xyz/u/{flat_posts["data_exploreProfiles_items_3_handle"]}) {flat_posts["data_exploreProfiles_items_3_stats_totalPosts"]}'
         )
-        col2.write(
+        col3.write(
             f'5. [{flat_posts["data_exploreProfiles_items_4_handle"]}](https://lenster.xyz/u/{flat_posts["data_exploreProfiles_items_4_handle"]}) {flat_posts["data_exploreProfiles_items_4_stats_totalPosts"]}'
+        )
+
+    with col5:
+        col5.write("Top Comments")
+        col5.write(
+            f'1. [{flat_comments["data_exploreProfiles_items_0_handle"]}](https://lenster.xyz/u/{flat_comments["data_exploreProfiles_items_0_handle"]}) {flat_comments["data_exploreProfiles_items_0_stats_totalComments"]}'
+        )
+        col5.write(
+            f'2. [{flat_comments["data_exploreProfiles_items_1_handle"]}](https://lenster.xyz/u/{flat_comments["data_exploreProfiles_items_1_handle"]}) {flat_comments["data_exploreProfiles_items_1_stats_totalComments"]}'
+        )
+        col5.write(
+            f'3. [{flat_comments["data_exploreProfiles_items_2_handle"]}](https://lenster.xyz/u/{flat_comments["data_exploreProfiles_items_2_handle"]}) {flat_comments["data_exploreProfiles_items_2_stats_totalComments"]}'
+        )
+        col5.write(
+            f'4. [{flat_comments["data_exploreProfiles_items_3_handle"]}](https://lenster.xyz/u/{flat_comments["data_exploreProfiles_items_3_handle"]}) {flat_comments["data_exploreProfiles_items_3_stats_totalComments"]}'
+        )
+        col5.write(
+            f'5. [{flat_comments["data_exploreProfiles_items_4_handle"]}](https://lenster.xyz/u/{flat_comments["data_exploreProfiles_items_4_handle"]}) {flat_comments["data_exploreProfiles_items_4_stats_totalComments"]}'
         )
 
 
