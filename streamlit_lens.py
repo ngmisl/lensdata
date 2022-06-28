@@ -30,7 +30,11 @@ def flatten_json(y):
 
 # Header
 def header():
-    st.markdown("# Lens Data")
+  st.set_page_config(
+    page_title="Lens Data",
+    page_icon="🌱"
+  )
+  st.markdown("# Lens Data")
 
 
 # Sidebar defined here
